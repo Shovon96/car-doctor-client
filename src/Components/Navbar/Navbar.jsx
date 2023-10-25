@@ -66,7 +66,9 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                <a className="border border-[#FF3811] text-[#FF3811] font-bold px-5 py-2 rounded-md">Appointment</a>
+                <NavLink to='/login'>
+                    <button className="border border-[#FF3811] text-[#FF3811] font-bold px-5 py-2 rounded-md">Appointment</button>
+                </NavLink>
             </div>
         </div>
     );
