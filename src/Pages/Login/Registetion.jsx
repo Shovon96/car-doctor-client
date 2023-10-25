@@ -1,6 +1,10 @@
+import { useContext } from "react";
 import { NavLink } from "react-router-dom";
+import { AuthContext } from "../../AuthProvider/AuthProvider";
 
 const Registetion = () => {
+
+    const {createAnUser} = useContext(AuthContext)
 
     const handleSignUp = event => {
         event.preventDefault();
@@ -10,6 +14,10 @@ const Registetion = () => {
         const password = form.password.value;
         console.log(name, email, password);
         form.reset()
+
+        createAnUser(email, password)
+        .then(result => result.user)
+        .catch(error => alert(error.message))
     }
 
     return (

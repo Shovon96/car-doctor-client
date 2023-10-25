@@ -1,6 +1,10 @@
+import { useContext } from "react";
 import { NavLink } from "react-router-dom";
+import { AuthContext } from "../../AuthProvider/AuthProvider";
 
 const Login = () => {
+
+    const {singInUser} = useContext(AuthContext)
 
     const handleSignIn = event => {
         event.preventDefault();
@@ -9,6 +13,10 @@ const Login = () => {
         const password = form.password.value;
         console.log(email, password);
         form.reset()
+
+        singInUser(email, password)
+        .then(result => console.log(result.user))
+        .catch(error => alert(error.message))
     }
 
     return (
