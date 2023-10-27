@@ -1,6 +1,16 @@
+import { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { AuthContext } from "../../AuthProvider/AuthProvider";
 
 const Navbar = () => {
+
+    const { user, logOut } = useContext(AuthContext);
+
+    const handleLogOut = () => {
+        logOut()
+            .then(() => { alert('LogOut Successfully') })
+            .catch(err => { alert(err.message) })
+    }
 
     const navLinks = <>
         <NavLink
@@ -27,7 +37,7 @@ const Navbar = () => {
         >
             Services
         </NavLink>
-        <NavLink
+        {/* <NavLink
             to="/blog"
             className={({ isActive, isPending }) =>
                 isPending ? "pending" : isActive ? "bg-[#FF3811] px-5 py-2 rounded-md text-white font-bold" : "px-5 py-2 border rounded-md font-bold"
@@ -42,7 +52,35 @@ const Navbar = () => {
             }
         >
             Contact
-        </NavLink>
+        </NavLink> */}
+        {user?.email ?
+            <>
+                <NavLink
+                    to='/bookings'
+                    className={({ isActive, isPending }) =>
+                        isPending ? "pending" : isActive ? "bg-[#FF3811] px-5 py-2 rounded-md text-white font-bold" : "px-5 py-2 border rounded-md font-bold"
+                    }
+                >
+                    Bookings
+                </NavLink>
+                <NavLink
+                    to='/login'
+                    onClick={handleLogOut}
+                    className='px-5 py-2 border rounded-md font-bold'
+                >
+                    SignOut
+                </NavLink>
+            </>
+            :
+            <NavLink
+                to="/login"
+                className={({ isActive, isPending }) =>
+                    isPending ? "pending" : isActive ? "bg-[#FF3811] px-5 py-2 rounded-md text-white font-bold" : "px-5 py-2 border rounded-md font-bold"
+                }
+            >
+                SignIn
+            </NavLink>
+        }
     </>
 
     return (
@@ -66,9 +104,7 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                <NavLink to='/login'>
-                    <button className="border border-[#FF3811] text-[#FF3811] font-bold px-5 py-2 rounded-md">Appointment</button>
-                </NavLink>
+                <button className="border border-[#FF3811] text-[#FF3811] font-bold px-5 py-2 rounded-md">Appointment</button>
             </div>
         </div>
     );
