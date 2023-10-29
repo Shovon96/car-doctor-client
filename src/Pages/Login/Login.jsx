@@ -1,21 +1,34 @@
 import { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
+import axios from "axios";
 
 const Login = () => {
 
-    const {singInUser} = useContext(AuthContext)
+    const {singInUser} = useContext(AuthContext);
+    const location = useLocation();
+    const navigate = useNavigate()
 
     const handleSignIn = event => {
         event.preventDefault();
         const form  = event.target;
         const email = form.email.value;
         const password = form.password.value;
-        console.log(email, password);
+        // console.log(email, password);
         form.reset()
 
         singInUser(email, password)
-        .then(result => console.log(result.user))
+        .then(() => {
+            const user = {email};
+            axios.post('http://localhost:5000/jwt', user, {withCredentials: true})
+            .then(res => {
+                if(res.data.success){
+                    navigate(location?.state ? location?.state : '/')
+                    alert("Login Successfully...")
+                }
+            })
+
+        })
         .catch(error => alert(error.message))
     }
 
